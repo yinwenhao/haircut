@@ -13,26 +13,16 @@
      http://www.springframework.org/schema/aop
      http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
      http://www.springframework.org/schema/context
-     http://www.springframework.org/schema/context/spring-context-4.0.xsd"
-	default-autowire="byName">
+     http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
-	<!-- Root Context: defines shared resources visible to all other web components -->
-	<context:annotation-config />
-	<context:component-scan base-package="com.when_how.haircut" />
-
-	<bean id="propertyConfigurer"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="order" value="1" />
-		<property name="locations">
-			<list>
-				<value>classpath*:application.properties</value>
-				<value>classpath*:task.properties</value>
-			</list>
-		</property>
+	<bean id="mongoClient" class="com.mongodb.MongoClient">
+		<constructor-arg value="${mongo.address}" />
 	</bean>
-
-	<import resource="spring-mybatis.xml" />
-	<import resource="spring-quartz.xml" />
-	<import resource="spring-mongo.xml" />
+	
+	<bean id="myMongoCollection" class="com.when_how.haircut.mongo.MongoCollectionFactory">
+		<constructor-arg ref="mongoClient" />
+		<constructor-arg value="${mongo.database}" />
+		<constructor-arg value="${mongo.collection}" />
+	</bean>
 
 </beans>

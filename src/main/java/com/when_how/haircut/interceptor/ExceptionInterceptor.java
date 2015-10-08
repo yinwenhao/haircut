@@ -56,16 +56,18 @@ public class ExceptionInterceptor implements Interceptor {
 			log.error("ExceptionInterceptor catch an error.", e);
 			return BaseAction.ERROR;
 		} finally {
-	        long executionTime = System.currentTimeMillis() - startTime;
-	        StringBuilder message = new StringBuilder(100);
-	        message.append("Executed action [");
-	        message.append(invocation.getProxy().getActionName());
-	        message.append("!");
-	        message.append(invocation.getProxy().getMethod());
-	        HttpServletRequest request= (HttpServletRequest) invocation.getInvocationContext().get(StrutsStatics.HTTP_REQUEST);
-	        message.append(request.getParameterMap().toString());
-	        message.append("] took ").append(executionTime).append(" ms.");
-	        log.info(message.toString());
+			if (log.isDebugEnabled()) {
+		        long executionTime = System.currentTimeMillis() - startTime;
+		        StringBuilder message = new StringBuilder(100);
+		        message.append("Executed action [");
+		        message.append(invocation.getAction().getClass().getSimpleName());
+		        message.append("!");
+		        message.append(invocation.getProxy().getMethod());
+		        HttpServletRequest request= (HttpServletRequest) invocation.getInvocationContext().get(StrutsStatics.HTTP_REQUEST);
+		        message.append(request.getParameterMap().toString());
+		        message.append("] took ").append(executionTime).append(" ms.");
+		        log.debug(message.toString());
+			}
 		}
 	}
 	

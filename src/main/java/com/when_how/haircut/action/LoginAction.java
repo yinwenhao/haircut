@@ -27,6 +27,12 @@ public class LoginAction extends BaseAction {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Action("/test")
+	public String test() {
+		setResponse(userService.test());
+		return SUCCESS;
+	}
 
 	/**
 	 * 登陆
@@ -35,7 +41,6 @@ public class LoginAction extends BaseAction {
 	 */
 	@Action("/login")
 	public String login() {
-		
 		setResponse(userService.login(getAccount(), getPassword()));
 		return SUCCESS;
 	}
@@ -47,9 +52,8 @@ public class LoginAction extends BaseAction {
 	 */
 	@Action("/logout")
 	public String logout() {
-		getSession().clear();
-		setVelocityLocation("/login.vm");
-		return VELOCITY;
+		setResponse(userService.logout(getAccount()));
+		return SUCCESS;
 	}
 
 	public String getAccount() {

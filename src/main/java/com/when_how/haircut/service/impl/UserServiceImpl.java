@@ -1,27 +1,62 @@
 package com.when_how.haircut.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bson.Document;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.mongodb.client.MongoCollection;
 import com.when_how.haircut.dao.mapper.UserMapper;
 import com.when_how.haircut.json.MyResponse;
 import com.when_how.haircut.service.UserService;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
-	
+
+	private Logger log = LoggerFactory.getLogger(getClass());
+
 	@Autowired
 	private UserMapper userMapper;
 
+	@Autowired
+	private MongoCollection<Document> myMongoCollection;
+
 	@Override
-	public void test() {
+	public MyResponse test() {
 		System.out.println("test ~");
+		MyResponse result = new MyResponse(1);
+		return result;
 	}
 
 	@Override
 	public MyResponse login(String account, String password) {
+		Document r = myMongoCollection.find(
+				new Document().append("user_id", "QRSTBWN")).first();
+
+		MyResponse result = new MyResponse(1, r.getString("password"));
+		return result;
+	}
+
+	@Override
+	public MyResponse logout(String account) {
+		log.error("~~~~~~~~~~~");
+		List<Integer> loc = new ArrayList<Integer>();
+		loc.add(100);
+		loc.add(123);
+		myMongoCollection.insertOne(new Document("user_id", account).append(
+				"loc", loc));
+		Document r = myMongoCollection.find(
+				new Document().append("user_id", account)).first();
+		List<?> cc = r.get("loc", List.class);
+		for (int i = 0; i < cc.size(); i++) {
+			System.out.println(cc.get(i));
+		}
 		MyResponse result = new MyResponse(1);
 		return result;
 	}
-	
+
 }

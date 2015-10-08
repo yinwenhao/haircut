@@ -74,9 +74,6 @@ public class BaseAction extends ActionSupport implements SessionAware {
 	private InputStream inputStream;
 	private InputStream stringInputStream;
 	private InputStream inputStreamException;
-	private InputStream sessionTimeOutException;
-	public static final String[] keys = new String[] { "playerDataChange",
-			"chats", "bobao", "fcmTips" };
 
 	/** session */
 	private Map<String, Object> session = new HashMap<String, Object>();
@@ -157,16 +154,4 @@ public class BaseAction extends ActionSupport implements SessionAware {
 		this.fileName = fileName;
 	}
 
-	public InputStream getSessionTimeOutException() throws JsonProcessingException {
-		response.setState(MyResponseState.ERROR_SESSION_TIMEOUT.getCode());
-		response.setContent(MyResponseState.ERROR_SESSION_TIMEOUT.getMessage());
-		ObjectMapper objectMapper = new ObjectMapper();
-		setSessionTimeOutException(new ByteArrayInputStream(objectMapper
-				.writeValueAsString(response).getBytes()));
-	    return sessionTimeOutException;
-    }
-
-	public void setSessionTimeOutException(InputStream sessionTimeOutException) {
-	    this.sessionTimeOutException = sessionTimeOutException;
-    }
 }
