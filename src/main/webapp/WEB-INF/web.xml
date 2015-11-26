@@ -63,7 +63,7 @@
 	
 	<!-- 初始化 -->
 	<servlet>
-		<servlet-name>initAfterString</servlet-name>
+		<servlet-name>initAfterSpring</servlet-name>
 		<servlet-class>com.when_how.haircut.init.IniData</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
