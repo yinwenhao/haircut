@@ -25,8 +25,8 @@
 		<property name="order" value="1" />
 		<property name="locations">
 			<list>
-				<value>classpath*:application.properties</value>
-				<value>classpath*:task.properties</value>
+				<value>file:${confPath}/application.properties</value>
+				<value>file:${confPath}/task.properties</value>
 			</list>
 		</property>
 	</bean>
