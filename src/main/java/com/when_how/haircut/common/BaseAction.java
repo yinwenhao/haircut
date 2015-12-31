@@ -3,17 +3,14 @@ package com.when_how.haircut.common;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
-import org.apache.struts2.interceptor.SessionAware;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opensymphony.xwork2.ActionSupport;
+import com.when_how.haircut.json.JsonTools;
 import com.when_how.haircut.json.MyResponse;
 
 /**
@@ -22,34 +19,34 @@ import com.when_how.haircut.json.MyResponse;
  */
 @ParentPackage("default")
 @Results({
-	@Result(name = BaseAction.DEFAULT, type = "velocity", params = {
-			"location", "/WEB-INF/templet/login.vm" }),
+		@Result(name = BaseAction.DEFAULT, type = "velocity", params = {
+				"location", "/WEB-INF/templet/login.vm" }),
 		@Result(name = BaseAction.ADMIN_LOGIN, type = "velocity", params = {
-					"location", "/WEB-INF/templet/adminLogin.vm" }),
+				"location", "/WEB-INF/templet/adminLogin.vm" }),
 		@Result(name = BaseAction.SUCCESS, type = "stream", params = {
 				"bufferSize", BaseAction.BUFFER_SIZE, "contentType",
 				BaseAction.CONTENT_TYPE, "inputName", "inputStream" }),
-		@Result(name = BaseAction.FILE, type = "stream", params = { "bufferSize",
-				BaseAction.BUFFER_SIZE, "contentType", BaseAction.CONTENT_TYPE,
-				"inputName", "stringInputStream", "contentDisposition",
-				"attachment;fileName=${fileName}" }),
-		@Result(name = BaseAction.ERROR, type = "stream", params = { "bufferSize",
-				BaseAction.BUFFER_SIZE, "contentType", BaseAction.CONTENT_TYPE,
-				"inputName", "inputStreamException" }),
-		@Result(name = BaseAction.SESSION_TIMEOUT, type = "stream", params = { "bufferSize",
-				BaseAction.BUFFER_SIZE, "contentType", BaseAction.CONTENT_TYPE,
-				"inputName", "sessionTimeOutException" }),
+		@Result(name = BaseAction.FILE, type = "stream", params = {
+				"bufferSize", BaseAction.BUFFER_SIZE, "contentType",
+				BaseAction.CONTENT_TYPE, "inputName", "stringInputStream",
+				"contentDisposition", "attachment;fileName=${fileName}" }),
+		@Result(name = BaseAction.ERROR, type = "stream", params = {
+				"bufferSize", BaseAction.BUFFER_SIZE, "contentType",
+				BaseAction.CONTENT_TYPE, "inputName", "inputStreamException" }),
+		@Result(name = BaseAction.SESSION_TIMEOUT, type = "stream", params = {
+				"bufferSize", BaseAction.BUFFER_SIZE, "contentType",
+				BaseAction.CONTENT_TYPE, "inputName", "sessionTimeOutException" }),
 		@Result(name = BaseAction.VELOCITY, type = "velocity", params = {
 				"location", "${velocityLocation}" }) })
-public class BaseAction extends ActionSupport implements SessionAware {
-	
+public class BaseAction extends ActionSupport {
+
 	public static final String DEFAULT = "default";
 	public static final String SUCCESS = "success";
 	public static final String ERROR = "error";
 	public static final String VELOCITY = "velocity";
 	public static final String FILE = "file";
 	public static final String ADMIN_LOGIN = "admin";
-	public static final String SESSION_TIMEOUT="session_timeout";
+	public static final String SESSION_TIMEOUT = "session_timeout";
 	/**
 	 * serialVersionUID
 	 */
@@ -74,17 +71,13 @@ public class BaseAction extends ActionSupport implements SessionAware {
 	private InputStream inputStream;
 	private InputStream stringInputStream;
 	private InputStream inputStreamException;
-
-	/** session */
-	private Map<String, Object> session = new HashMap<String, Object>();
-
+	
 	public void setInputStream(InputStream inputStream) {
 		this.inputStream = inputStream;
 	}
 
 	public InputStream getInputStream() throws JsonProcessingException {
-		ObjectMapper objectMapper = new ObjectMapper();
-		setInputStream(new ByteArrayInputStream(objectMapper
+		setInputStream(new ByteArrayInputStream(JsonTools.objectMapper
 				.writeValueAsString(response).getBytes()));
 		return inputStream;
 	}
@@ -98,18 +91,19 @@ public class BaseAction extends ActionSupport implements SessionAware {
 	}
 
 	public InputStream getInputStreamException() throws JsonProcessingException {
-		ObjectMapper objectMapper = new ObjectMapper();
-		setInputStreamException(new ByteArrayInputStream(objectMapper
+		setInputStreamException(new ByteArrayInputStream(JsonTools.objectMapper
 				.writeValueAsString(response).getBytes()));
 		return inputStreamException;
 	}
-	
+
 	public void setInputStreamException(InputStream inputStreamException) {
 		this.inputStreamException = inputStreamException;
 	}
 
-	public InputStream getStringInputStream() throws UnsupportedEncodingException {
-		setStringInputStream(new ByteArrayInputStream(stringResponse.getBytes("GBK")));
+	public InputStream getStringInputStream()
+			throws UnsupportedEncodingException {
+		setStringInputStream(new ByteArrayInputStream(
+				stringResponse.getBytes("GBK")));
 		return stringInputStream;
 	}
 
@@ -125,15 +119,6 @@ public class BaseAction extends ActionSupport implements SessionAware {
 		this.stringResponse = stringResponse;
 	}
 
-	public Map<String, Object> getSession() {
-		return session;
-	}
-
-	public void setSession(Map<String, Object> session) {
-		// TODO: 这里可以利用redis做个分布式全局session
-		this.session = session;
-	}
-
 	public String getVelocityLocation() {
 		return velocityLocation;
 	}
@@ -141,7 +126,7 @@ public class BaseAction extends ActionSupport implements SessionAware {
 	public void setVelocityLocation(String velocityLocation) {
 		this.velocityLocation = "/WEB-INF/templet" + velocityLocation;
 	}
-	
+
 	public void setVelocityLocationWholePath(String velocityLocation) {
 		this.velocityLocation = velocityLocation;
 	}

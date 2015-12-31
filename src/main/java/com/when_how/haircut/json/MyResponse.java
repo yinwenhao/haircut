@@ -10,6 +10,8 @@ public class MyResponse {
 	
 	private String content;
 	
+	private Object data;
+	
 	public MyResponse() {}
 	
 	public MyResponse(int state) {
@@ -35,6 +37,14 @@ public class MyResponse {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public Object getData() {
+		return data;
+	}
+
+	public void setData(Object data) {
+		this.data = data;
 	}
 
 }

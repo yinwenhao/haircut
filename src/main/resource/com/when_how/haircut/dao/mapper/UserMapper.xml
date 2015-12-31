@@ -4,6 +4,13 @@
 <!-- 这里的namespace名字必须为执行该sql的dao地址&nbsp; -->
 <mapper namespace="com.when_how.haircut.dao.mapper.UserMapper">
 
+	<select id="getUser" parameterType="long"
+		resultType="com.when_how.haircut.dao.entity.User">
+		<![CDATA[ 
+			SELECT * FROM t_user WHERE id = #{id}
+        ]]>
+	</select>
+	
 	<select id="getUserByAccount" parameterType="String"
 		resultType="com.when_how.haircut.dao.entity.User">
 		<![CDATA[ 

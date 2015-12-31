@@ -6,10 +6,12 @@ import com.when_how.haircut.dao.entity.User;
 
 public interface UserMapper {
 	
+	public User getUser(long id);
+	
 	public User getUserByAccount(String account);
 	
 	public List<User> getUserList();
 	
-	public void deleteUser(String account);
+	public void insertUser(User user);
 	
 }

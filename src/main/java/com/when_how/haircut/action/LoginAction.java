@@ -25,15 +25,11 @@ public class LoginAction extends BaseAction {
 	
 	private String password;
 	
+	private long uid;
+	
 	@Autowired
 	private UserService userService;
 	
-	@Action("/test")
-	public String test() {
-		setResponse(userService.test());
-		return SUCCESS;
-	}
-
 	/**
 	 * 登陆
 	 * 
@@ -52,7 +48,25 @@ public class LoginAction extends BaseAction {
 	 */
 	@Action("/logout")
 	public String logout() {
-		setResponse(userService.logout(getAccount()));
+		setResponse(userService.logout(getUid()));
+		return SUCCESS;
+	}
+	
+	@Action("/test")
+	public String test() {
+		setResponse(userService.test());
+		return SUCCESS;
+	}
+
+	@Action("/test1")
+	public String test1() {
+		setResponse(userService.test1(getAccount(), getPassword()));
+		return SUCCESS;
+	}
+
+	@Action("/test2")
+	public String test2() {
+		setResponse(userService.test2(getAccount()));
 		return SUCCESS;
 	}
 
@@ -70,6 +84,14 @@ public class LoginAction extends BaseAction {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public long getUid() {
+		return uid;
+	}
+
+	public void setUid(long uid) {
+		this.uid = uid;
 	}
 
 }

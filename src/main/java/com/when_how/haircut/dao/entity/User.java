@@ -2,18 +2,20 @@ package com.when_how.haircut.dao.entity;
 
 public class User {
 	
-	private static final String split = ",";
+	private long id;
 	
 	private String account;
 	
 	private String password;
 	
-	private int permission_level;
+	private String nick;
 	
-	private String permission;
+	private int level;
 	
-	private int[] permissionList;
-
+	private String mobile;
+	
+	private String identityCard;
+	
 	public String getAccount() {
 		return account;
 	}
@@ -30,43 +32,44 @@ public class User {
 		this.password = password;
 	}
 
-	public int getPermission_level() {
-		return permission_level;
+	public String getNick() {
+		return nick;
 	}
 
-	public void setPermission_level(int permission_level) {
-		this.permission_level = permission_level;
+	public void setNick(String nick) {
+		this.nick = nick;
 	}
 
-	public String getPermission() {
-		return permission;
+	public int getLevel() {
+		return level;
 	}
 
-	public void setPermission(String permission) {
-		this.permission = permission;
-		String[] ps = this.permission.split(split);
-		permissionList = new int[ps.length];
-		for (int i=0; i<ps.length; i++) {
-			if (!ps[i].isEmpty()) {
-				permissionList[i] = Integer.valueOf(ps[i]);
-			}
-		}
+	public void setLevel(int level) {
+		this.level = level;
 	}
 
-	public int[] getPermissionList() {
-		return permissionList;
+	public long getId() {
+		return id;
 	}
 
-	public void setPermissionList(int[] permissionList) {
-		this.permissionList = permissionList;
+	public void setId(long id) {
+		this.id = id;
 	}
 
-	public boolean isPermissionAllowed(int databaseId){
-		for(int i=0;i<permissionList.length;i++){
-			if(permissionList[i]==databaseId){
-				return true;
-			}
-		}
-		return false;
+	public String getMobile() {
+		return mobile;
 	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public String getIdentityCard() {
+		return identityCard;
+	}
+
+	public void setIdentityCard(String identityCard) {
+		this.identityCard = identityCard;
+	}
+	
 }

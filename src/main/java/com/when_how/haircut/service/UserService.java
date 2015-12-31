@@ -8,6 +8,10 @@ public interface UserService {
 	
 	MyResponse login(String account, String password);
 
-	MyResponse logout(String account);
+	MyResponse logout(long uid);
+	
+	MyResponse test1(String account, String password);
+
+	MyResponse test2(String account);
 
 }
